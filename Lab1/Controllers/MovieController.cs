@@ -56,7 +56,7 @@ namespace Lab1.Controllers
                 return NotFound();
             }
 
-            return movie;
+            return movieViewModel;
         }
 
         // PUT: api/Movie/5
