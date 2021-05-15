@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab1.Data;
 using Lab1.Models;
+using Lab1.ViewModels;
 
 namespace Lab1.Controllers
 {
@@ -21,6 +22,13 @@ namespace Lab1.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        [Route("filter/{rating}")]
+        public ActionResult<IEnumerable<Movie>> FilterMovies(int rating)
+        {
+            return _context.Movies.Where(m => m.rating >= rating).ToList();
+        }
+
         // GET: api/Movie
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
@@ -30,9 +38,18 @@ namespace Lab1.Controllers
 
         // GET: api/Movie/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<MovieViewModel>> GetMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
+
+            var movieViewModel = new MovieViewModel
+            {
+                Director = movie.Director,
+                ID = movie.ID,
+                rating = movie.rating,
+                Name = movie.Name
+
+            };
 
             if (movie == null)
             {
