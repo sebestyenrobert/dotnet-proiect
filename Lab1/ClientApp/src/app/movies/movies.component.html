@@ -1,0 +1,26 @@
+﻿<h1 id="tableLabel">Movies</h1>
+
+<p>This component list movies.</p>
+
+<p *ngIf="!movies"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="movies">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>director</th>
+            <th>release</th>
+            <th>rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let movie of movies">
+            <td>{{ movie.id }}</td>
+            <td>{{ movie.name }}</td>
+            <td>{{ movie.director }}</td>
+            <td>{{ movie.release }}</td>
+            <td>{{ movie.rating }}</td>
+        </tr>
+    </tbody>
+</table>
