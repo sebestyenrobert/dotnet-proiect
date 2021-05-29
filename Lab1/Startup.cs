@@ -13,6 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using Lab1.ViewModels;
+using Lab1.Validators;
 
 namespace Lab1
 {
@@ -43,7 +47,8 @@ namespace Lab1
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddFluentValidation();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -72,6 +77,9 @@ namespace Lab1
                     }
                 });
             });
+
+            services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
+            services.AddTransient<IValidator<CommentViewModel>, CommentValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

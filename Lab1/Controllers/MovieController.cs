@@ -41,7 +41,7 @@ namespace Lab1.Controllers
         // POST: api/{id}/comments
         [HttpPost]
         [Route("{id}/comments")]
-        public IActionResult PostCommentForMovie (int id, Comment comment)
+        public IActionResult PostCommentForMovie (int id, CommentViewModel comment)
         {
             var movie = _context.Movies
                 .Where(m => m.ID == id)
@@ -53,14 +53,48 @@ namespace Lab1.Controllers
                 return NotFound();
             }
 
-            movie.Comments.Add(comment);
+            movie.Comments.Add(_mapper.Map<Comment>(comment));
             _context.Entry(movie).State = EntityState.Modified;
             _context.SaveChanges();
 
             return Ok();
         }
 
+        // PUT: api/{id}/comments/{commentId}
+        [HttpPut]
+        [Route("{id}/comments/{commentId}")]
+        public async Task<IActionResult> PutComment (int commentId, CommentViewModel comment)
+        {
+            if (commentId != comment.Id)
+            {
+                return BadRequest();
+            }
 
+            _context.Entry(_mapper.Map<Comment>(comment)).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CommentExists(commentId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool CommentExists(int commentId)
+        {
+            throw new NotImplementedException();
+        }
 
         // GET: api/filter{rating}
         [HttpGet]
@@ -116,14 +150,14 @@ namespace Lab1.Controllers
         // PUT: api/Movie/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        public async Task<IActionResult> PutMovie(int id, MovieViewModel movie)
         {
             if (id != movie.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(movie).State = EntityState.Modified;
+            _context.Entry(_mapper.Map<Movie>(movie)).State = EntityState.Modified;
 
             try
             {
@@ -147,9 +181,9 @@ namespace Lab1.Controllers
         // POST: api/Movie
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(MovieViewModel movie)
         {
-            _context.Movies.Add(movie);
+            _context.Movies.Add(_mapper.Map<Movie>(movie));
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMovie", new { id = movie.ID }, movie);
@@ -173,7 +207,7 @@ namespace Lab1.Controllers
 
         private bool MovieExists(int id)
         {
-            return _context.Movies.Any(e => e.ID == id);
+            return _context.Movies.Any(c => c.ID == id);
         }
     }
 }
