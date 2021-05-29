@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab1.Data;
 using Lab1.Models;
 using Lab1.ViewModels;
+using AutoMapper;
 
 namespace Lab1.Controllers
 {
@@ -16,12 +17,52 @@ namespace Lab1.Controllers
     public class MovieController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public MovieController(ApplicationDbContext context)
+        public MovieController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
+        // GET: api/{id}/comments
+        [HttpGet]
+        [Route("{id}/comments")]
+        public ActionResult<IEnumerable<MovieWithCommentsViewModel>> GetCommentsForMovies (int id)
+        {
+            var query = _context.Movies
+                .Where(m => m.ID == id)
+                .Include(m => m.Comments)
+                .Select(m => _mapper.Map<MovieWithCommentsViewModel>(m));
+
+            return query.ToList();
+        }
+
+        // POST: api/{id}/comments
+        [HttpPost]
+        [Route("{id}/comments")]
+        public IActionResult PostCommentForMovie (int id, Comment comment)
+        {
+            var movie = _context.Movies
+                .Where(m => m.ID == id)
+                .Include(m => m.Comments)
+                .FirstOrDefault();
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            movie.Comments.Add(comment);
+            _context.Entry(movie).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
+
+        // GET: api/filter{rating}
         [HttpGet]
         [Route("filter/{rating}")]
         public ActionResult<IEnumerable<Movie>> FilterMovies(int rating)
