@@ -3,6 +3,8 @@ export class Movie {
   name: string;
   director: string;
   release: string;
-  rating: number
-
+  rating: number;
+  createdTimestamp: Date;
+  description: string;
+  watched: boolean;
 }

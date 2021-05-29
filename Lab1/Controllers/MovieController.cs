@@ -26,7 +26,20 @@ namespace Lab1.Controllers
         [Route("filter/{rating}")]
         public ActionResult<IEnumerable<Movie>> FilterMovies(int rating)
         {
-            return _context.Movies.Where(m => m.rating >= rating).ToList();
+            return _context.Movies.Where(m => m.Rating >= rating).ToList();
+        }
+
+        [HttpGet]
+        [Route("createdFilter")]
+        public async Task<ActionResult<IEnumerable<Movie>>> FilterByCreatedDate (DateTime? fromDate, DateTime? toDate)
+        {
+            var filteredMovies = await _context.Movies
+                .Where(m => m.CreatedTimestamp >= fromDate && m.CreatedTimestamp <= toDate)
+                .OrderByDescending(m => m.Release)
+                .Select(m => m)
+                .ToListAsync();
+
+            return Ok(filteredMovies);
         }
 
         // GET: api/Movie
@@ -46,7 +59,7 @@ namespace Lab1.Controllers
             {
                 Director = movie.Director,
                 ID = movie.ID,
-                rating = movie.rating,
+                Rating = movie.Rating,
                 Name = movie.Name
 
             };

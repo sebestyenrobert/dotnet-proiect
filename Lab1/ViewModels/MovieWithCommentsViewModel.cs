@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Lab1.ViewModels
 {
-    public class MovieViewModel
+    public class MovieWithCommentsViewModel
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -11,5 +13,6 @@ namespace Lab1.ViewModels
         public DateTime CreatedTimestamp { get; set; }
         public string Description { get; set; }
         public bool Watched { get; set; }
+        public IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }
