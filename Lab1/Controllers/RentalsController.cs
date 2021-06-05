@@ -74,5 +74,50 @@ namespace Lab1.Controllers
              
             return Ok(resultViewModel);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateRental(UpdateRentalForUser updateRentalRequest)
+        {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            Rental rental = _context.Rentals.Where(r => r.Id == updateRentalRequest.Id && r.ApplicationUser.Id == user.Id).Include(r => r.Movies).FirstOrDefault();
+
+            if (rental == null)
+            {
+                return BadRequest("There is no rentals with this ID.");
+            }
+
+            updateRentalRequest.MovieIds.ForEach(mid =>
+            {
+                var movie = _context.Movies.Find(mid);
+                if (movie != null && !rental.Movies.Contains(movie))
+                {
+                    rental.Movies.ToList().Add(movie);
+                }
+            });
+
+            _context.Entry(rental).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok();
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRental(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var rental = _context.Rentals.Where(r => r.ApplicationUser.Id == user.Id && r.Id == id).FirstOrDefault();
+
+            if (rental == null)
+            {
+                return NotFound();
+            }
+
+            _context.Rentals.Remove(rental);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
