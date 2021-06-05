@@ -8,5 +8,6 @@ namespace Lab1.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public List<Rental> Rentals { get; set; }
     }
 }

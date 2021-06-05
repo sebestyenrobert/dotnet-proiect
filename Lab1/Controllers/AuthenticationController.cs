@@ -82,7 +82,6 @@ namespace Lab1.Controllers
                 {
                     var claims = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
-                    //new Claim(JwtRegisteredClaimNames.na)
                 };
                     var signinKey = new SymmetricSecurityKey(
                       Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));

@@ -15,5 +15,6 @@ namespace Lab1.Models
         public string Description { get; set; }
         public bool Watched { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<Rental> Rentals { get; set; }
     }
 }
