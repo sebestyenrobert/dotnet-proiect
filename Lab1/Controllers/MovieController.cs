@@ -9,6 +9,7 @@ using Lab1.Data;
 using Lab1.Models;
 using Lab1.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lab1.Controllers
 {
@@ -26,6 +27,7 @@ namespace Lab1.Controllers
         }
 
         // GET: api/{id}/comments
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpGet]
         [Route("{id}/comments")]
         public ActionResult<IEnumerable<MovieWithCommentsViewModel>> GetCommentsForMovies (int id)
@@ -39,6 +41,7 @@ namespace Lab1.Controllers
         }
 
         // POST: api/{id}/comments
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpPost]
         [Route("{id}/comments")]
         public IActionResult PostCommentForMovie (int id, CommentViewModel comment)
@@ -61,6 +64,7 @@ namespace Lab1.Controllers
         }
 
         // PUT: api/{id}/comments/{commentId}
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpPut]
         [Route("{id}/comments/{commentId}")]
         public async Task<IActionResult> PutComment (int commentId, CommentViewModel comment)
@@ -97,6 +101,7 @@ namespace Lab1.Controllers
         }
 
         // GET: api/filter{rating}
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpGet]
         [Route("filter/{rating}")]
         public ActionResult<IEnumerable<Movie>> FilterMovies(int rating)
@@ -105,6 +110,7 @@ namespace Lab1.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [Route("createdFilter")]
         public async Task<ActionResult<IEnumerable<Movie>>> FilterByCreatedDate (DateTime? fromDate, DateTime? toDate)
         {
@@ -149,6 +155,7 @@ namespace Lab1.Controllers
 
         // PUT: api/Movie/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MovieViewModel movie)
         {
@@ -180,6 +187,7 @@ namespace Lab1.Controllers
 
         // POST: api/Movie
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(MovieViewModel movie)
         {
@@ -190,6 +198,7 @@ namespace Lab1.Controllers
         }
 
         // DELETE: api/Movie/5
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
