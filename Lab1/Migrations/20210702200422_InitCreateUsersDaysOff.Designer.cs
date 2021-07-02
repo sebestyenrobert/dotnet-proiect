@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210515125417_UpdateMovie")]
-    partial class UpdateMovie
+    [Migration("20210702200422_InitCreateUsersDaysOff")]
+    partial class InitCreateUsersDaysOff
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -189,28 +189,61 @@ namespace Lab1.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Lab1.Models.Movie", b =>
+            modelBuilder.Entity("Lab1.Models.UserDaysOff", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Director")
+                    b.Property<int>("Accepted")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Decided_user_id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<int>("Refused")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("User_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UsersDaysOffs");
+                });
+
+            modelBuilder.Entity("Lab1.Models.UserDaysOffOfficial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Release")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("User_id")
+                        .HasColumnType("int");
 
-                    b.Property<double>("rating")
-                        .HasColumnType("float");
+                    b.HasKey("Id");
 
-                    b.HasKey("ID");
-
-                    b.ToTable("Movies");
+                    b.ToTable("UsersDaysOffOfficials");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -12,8 +12,8 @@ namespace Lab1.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserDaysOff> UsersDaysOffs { get; set; }
+        public DbSet<UserDaysOffOfficial> UsersDaysOffOfficials { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public ApplicationDbContext(

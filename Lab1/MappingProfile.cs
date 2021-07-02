@@ -9,9 +9,9 @@ namespace Lab1
     {
         public MappingProfile()
         {
-            CreateMap<Movie, MovieViewModel>().ReverseMap();
-            CreateMap<Comment, CommentViewModel>().ReverseMap();
-            CreateMap<Movie, MovieWithCommentsViewModel>().ReverseMap();
+            CreateMap<UserDaysOff, UserDaysOffViewModel>().ReverseMap();
+            CreateMap<UserDaysOffOfficial, UserDaysOffOfficialViewModel>().ReverseMap();
+            //CreateMap<Movie, MovieWithCommentsViewModel>().ReverseMap();
         }
     }
 }

@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Lab1.Controllers
 {
@@ -107,5 +108,13 @@ namespace Lab1.Controllers
             }
             return Unauthorized();
         }
+
+        [HttpGet]
+        [Route("getUsers")]
+        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers ()
+        {
+            return await _context.ApplicationUsers.ToListAsync();
+        }
+
     }
 }

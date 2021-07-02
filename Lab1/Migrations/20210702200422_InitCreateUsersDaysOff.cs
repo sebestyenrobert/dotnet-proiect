@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Lab1.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitCreateUsersDaysOff : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,6 +83,41 @@ namespace Lab1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersDaysOffOfficials",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User_id = table.Column<int>(type: "int", nullable: false),
+                    Days = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersDaysOffOfficials", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersDaysOffs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User_id = table.Column<int>(type: "int", nullable: false),
+                    Decided_user_id = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Accepted = table.Column<int>(type: "int", nullable: false),
+                    Refused = table.Column<int>(type: "int", nullable: false),
+                    Days = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersDaysOffs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -279,6 +314,12 @@ namespace Lab1.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "UsersDaysOffOfficials");
+
+            migrationBuilder.DropTable(
+                name: "UsersDaysOffs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

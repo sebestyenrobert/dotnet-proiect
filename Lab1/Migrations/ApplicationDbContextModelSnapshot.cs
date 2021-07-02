@@ -187,63 +187,61 @@ namespace Lab1.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Lab1.Models.Comment", b =>
+            modelBuilder.Entity("Lab1.Models.UserDaysOff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Accepted")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Decided_user_id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MovieId")
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Refused")
                         .HasColumnType("int");
 
-                    b.Property<int>("Stars")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("User_id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("Comment");
+                    b.ToTable("UsersDaysOffs");
                 });
 
-            modelBuilder.Entity("Lab1.Models.Movie", b =>
+            modelBuilder.Entity("Lab1.Models.UserDaysOffOfficial", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedTimestamp")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Director")
+                    b.Property<string>("User_id")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Release")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Watched")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Movies");
+                    b.ToTable("UsersDaysOffOfficials");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -381,17 +379,6 @@ namespace Lab1.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Lab1.Models.Comment", b =>
-                {
-                    b.HasOne("Lab1.Models.Movie", "Movie")
-                        .WithMany("Comments")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -441,11 +428,6 @@ namespace Lab1.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Lab1.Models.Movie", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

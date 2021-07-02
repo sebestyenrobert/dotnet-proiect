@@ -16,7 +16,7 @@ using System;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Lab1.ViewModels;
-using Lab1.Validators;
+//using Lab1.Validators;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -94,8 +94,8 @@ namespace Lab1
                 });
             });
 
-            services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
-            services.AddTransient<IValidator<CommentViewModel>, CommentValidator>();
+            //services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
+            //services.AddTransient<IValidator<CommentViewModel>, CommentValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
