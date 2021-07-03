@@ -14,6 +14,7 @@ namespace Lab1.Data
     {
         public DbSet<UserDaysOff> UsersDaysOffs { get; set; }
         public DbSet<UserDaysOffOfficial> UsersDaysOffOfficials { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public ApplicationDbContext(

@@ -6,6 +6,7 @@ using AutoMapper;
 using Lab1.Data;
 using Lab1.Models;
 using Lab1.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace Lab1.Controllers
 
         [HttpGet]
         [Route("{userId}/daysoffofficial")]
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         public async Task<ActionResult<IEnumerable<UserDaysOffOfficial>>> GetDaysOffOfficialForUser(string userId)
         {
             var query = await _context.UsersDaysOffOfficials
