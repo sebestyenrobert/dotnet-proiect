@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Lab1.Data;
-using Lab1.Models;
-using Lab1.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Lab1.Data;
+using Lab1.Models;
 
 namespace Lab1.Controllers
 {
@@ -18,27 +15,94 @@ namespace Lab1.Controllers
     public class UserDaysOffOfficialController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public UserDaysOffOfficialController(ApplicationDbContext context, IMapper mapper)
+        public UserDaysOffOfficialController(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
+        // GET: api/UserDaysOffOfficial
         [HttpGet]
-        [Route("{userId}/daysoffofficial")]
-        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
-        public async Task<ActionResult<IEnumerable<UserDaysOffOfficial>>> GetDaysOffOfficialForUser(string userId)
+        public async Task<ActionResult<IEnumerable<UserDaysOffOfficial>>> GetUsersDaysOffOfficials()
         {
-            var query = await _context.UsersDaysOffOfficials
-                .Where(u => u.User_id == userId)
-                .Select(m => _mapper.Map<UserDaysOffOfficialViewModel>(m))
-                .ToListAsync();
+            return await _context.UsersDaysOffOfficials.ToListAsync();
+        }
 
-            return Ok(query);
+        // GET: api/UserDaysOffOfficial/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDaysOffOfficial>> GetUserDaysOffOfficial(int id)
+        {
+            var userDaysOffOfficial = await _context.UsersDaysOffOfficials.FindAsync(id);
+
+            if (userDaysOffOfficial == null)
+            {
+                return NotFound();
+            }
+
+            return userDaysOffOfficial;
+        }
+
+        // PUT: api/UserDaysOffOfficial/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUserDaysOffOfficial(int id, UserDaysOffOfficial userDaysOffOfficial)
+        {
+            if (id != userDaysOffOfficial.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(userDaysOffOfficial).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserDaysOffOfficialExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/UserDaysOffOfficial
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<UserDaysOffOfficial>> PostUserDaysOffOfficial(UserDaysOffOfficial userDaysOffOfficial)
+        {
+            _context.UsersDaysOffOfficials.Add(userDaysOffOfficial);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUserDaysOffOfficial", new { id = userDaysOffOfficial.Id }, userDaysOffOfficial);
+        }
+
+        // DELETE: api/UserDaysOffOfficial/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserDaysOffOfficial(int id)
+        {
+            var userDaysOffOfficial = await _context.UsersDaysOffOfficials.FindAsync(id);
+            if (userDaysOffOfficial == null)
+            {
+                return NotFound();
+            }
+
+            _context.UsersDaysOffOfficials.Remove(userDaysOffOfficial);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool UserDaysOffOfficialExists(int id)
+        {
+            return _context.UsersDaysOffOfficials.Any(e => e.Id == id);
         }
     }
-
-    
 }
